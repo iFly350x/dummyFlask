@@ -1,0 +1,31 @@
+<html>
+<head>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  {% block title %}
+        {% if title %}
+        <title>{{ title }}</title>
+        {% else %}
+        <title>Default Home</title>
+    {% endif %}
+        {% endblock  %}
+</head>
+
+<body>
+<nav class="nav-wrapper">
+    <div class="container">
+    <a href="#" class="brand-logo center">Website</a>
+        <ul class="center">
+            <li><a href="#" class="">Home</a></li>
+            <li><a href="#">About</a></li>
+            </ul>
+        </div>
+</nav>
+
+{% block content %} {% endblock content %}
+{% block meme %} {% endblock meme %}
+</body>
+</html>
