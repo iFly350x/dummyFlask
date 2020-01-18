@@ -1,15 +1,17 @@
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session, flash
+from datetime import timedelta
 
 app = Flask(__name__)
 app.secret_key = "sup"
+app.permanent_session_lifetime = timedelta(seconds=1)
 app.debug = True
 
+@app.route("/")
 @app.route("/home")
 def home():
-    return render_template("index.html", title = "Hello")
+    return render_template("index.html")
 
-@app.route("/login")
-@app.route("/", methods = ["POST", "GET"])
+@app.route("/login", methods = ["POST", "GET"])
 def login():
     if request.method == "POST":
         user = request.form["nm"]
@@ -17,9 +19,11 @@ def login():
         pwd = request.form["password"]
         session["pwd"] = pwd
         return redirect(url_for("user"))
-        # return redirect(url_for("password", passwd = pwd))
     else:
-         return render_template("login.html", title = "login")
+        if "user" in session and "pwd" in session:
+            return redirect(url_for("user"))
+
+        return render_template("login.html", title = "login")
 
 @app.route("/user")
 def user():
@@ -30,9 +34,11 @@ def user():
     else:
         return redirect(url_for("login"))
 
-# @app.route("<PWD>")
-# def password(paswd):
-#     return f"<h1>{paswd}</h1>"
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    flash("Logged Out", "info")
+    return redirect(url_for("login"))
 
 if __name__ == "__main__":
     app.run(port=8000)
